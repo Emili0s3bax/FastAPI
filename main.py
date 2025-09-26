@@ -1,10 +1,6 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 
-class User(SQLModel):
-    id: int
-    username: str
-    password: str
 
 class UserLogin(SQLModel):
     username: str
@@ -12,12 +8,15 @@ class UserLogin(SQLModel):
 
 app = FastAPI()
 
+
 users_db = {
-    "admin": User(username="admin", password="1234")
+    "admin": UserLogin(username="admin", password="1234")
 }
 
 @app.post("/login")
 def login(user: UserLogin):
-    for login_user in users_db:
-        if user.username == login_user and user.password == users_db:
+    for username, db_user in users_db.items():
+        if db_user.username == user.username and db_user.password == user.password:
             return {"message": "Login successful"}
+    
+    return {"message": "usuario y/o contraseña incorrectos."}
