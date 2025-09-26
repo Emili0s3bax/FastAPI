@@ -1,21 +1,19 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 
+class User(SQLModel):
+    id: int
+    username: str
+    password: str
+
 class UserLogin(SQLModel):
     username: str
     password: str
 
-
-
-
-
 app = FastAPI()
 
 users_db = {
-    "Juan": "Ju@n123",
-    "Ana": "An@456",
-    "Luis": "Lu!s789",
-    "Emilio": "Emi!io101"
+    "admin": User(username="admin", password="1234")
 }
 
 @app.post("/login")
